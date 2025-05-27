@@ -1,38 +1,532 @@
+/* App.css */
+
+/* Modern, Classy Design System */
+:root {
+  --primary: #5D4037;    /* Warm Brown */
+  --secondary: #8D6E63;  /* Soft Brown */
+  --accent: #A1887F;     /* Light Brown */
+  --background: #EFEBE9; /* Warm Off-White */
+  --surface: #FFFFFF;
+  --text-primary: #3E2723; /* Deep Brown */
+  --text-secondary: #6D4C41; /* Medium Brown */
+  --success: #81C784;    /* Soft Green */
+  --error: #A5A5A5;      /* Muted Gray */
+  --border: #D7CCC8;     /* Light Brown */
+  --shadow: rgba(93, 64, 55, 0.08);
+  --gradient-start: #8D6E63;
+  --gradient-end: #5D4037;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;500;600&display=swap');
+
+body {
+  background-color: var(--background);
+  background-image: 
+    radial-gradient(circle at 100% 0%, rgba(141, 110, 99, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(93, 64, 55, 0.05) 0%, transparent 50%);
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
 .App {
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 20 C70 20 80 40 80 50 C80 60 70 80 50 80 C30 80 20 60 20 50 C20 40 30 20 50 20 Z" fill="none" stroke="%238D6E63" stroke-width="2" stroke-dasharray="4 4"/><circle cx="35" cy="40" r="5" fill="%238D6E63" opacity="0.3"/><circle cx="65" cy="40" r="5" fill="%238D6E63" opacity="0.3"/><path d="M35 60 Q50 70 65 60" fill="none" stroke="%238D6E63" stroke-width="2" opacity="0.3"/></svg>');
+  opacity: 0.1;
+  z-index: -1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20 20 L80 20 L80 80 L20 80 Z" fill="none" stroke="%238D6E63" stroke-width="2" stroke-dasharray="4 4"/><path d="M30 30 L70 30 M30 50 L70 50 M30 70 L70 70" stroke="%238D6E63" stroke-width="2" opacity="0.3"/></svg>');
+  opacity: 0.1;
+  z-index: -1;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 2rem;
+  padding: 1rem 0 2rem;
+  position: relative;
+}
+
+.App-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+  border-radius: 2px;
+}
+
+.App-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--primary);
+  text-shadow: 2px 2px 4px var(--shadow);
+  position: relative;
+}
+
+.App-header h1::after {
+  content: '✨';
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  font-size: 1.5rem;
+  animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Post Form */
+form {
+  background: var(--surface);
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px var(--shadow);
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  border: 1px solid var(--border);
+  align-items: center;
+}
+
+form div {
+  display: flex;
+  flex: 1;
+  gap: 1rem;
+  align-items: center;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  transition: all 0.3s ease;
+  background-color: var(--background);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(161, 136, 127, 0.1);
+  background-color: var(--surface);
+}
+
+form button[type="submit"] {
+  background-color: var(--accent);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+form button[type="submit"]:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
+}
+
+/* Post Items */
+.post-item {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.post-item::before {
+  content: '💫';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.2rem;
+  opacity: 0.1;
+}
+
+.post-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--shadow);
+  border-color: var(--accent);
+}
+
+.post-content {
+  flex: 1;
+  position: relative;
+}
+
+.post-content strong {
+  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: inline;
+  margin-right: 0.25rem;
+  position: relative;
+}
+
+.post-content strong::after {
+  content: ":";
+  margin-left: 0.25rem;
+  color: var(--accent);
+}
+
+.post-content div {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.post-content div::before {
+  content: '🕒';
+  font-size: 0.8rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.post-item:hover .action-buttons {
+  opacity: 1;
+}
+
+.edit-button, .delete-button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  background-color: var(--text-secondary);
+  color: white;
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.edit-button:hover {
+  background-color: var(--accent);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.delete-button {
+  background-color: var(--error);
+}
+
+.delete-button:hover {
+  background-color: var(--secondary);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* App Description */
+.app-description {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: var(--surface);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px var(--shadow);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.app-description::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+}
+
+.app-description h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--primary);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.app-description h2::after {
+  content: '💫';
+  position: absolute;
+  top: -10px;
+  right: -20px;
+  font-size: 1.5rem;
+  animation: sparkle 2s infinite;
+}
+
+.app-description p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-family: 'Source Sans Pro', sans-serif;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.app-description p::before,
+.app-description p::after {
+  content: '💝';
+  position: absolute;
+  font-size: 1.2rem;
+  opacity: 0.3;
+}
+
+.app-description p::before {
+  left: -10px;
+  top: 0;
+}
+
+.app-description p::after {
+  right: -10px;
+  bottom: 0;
+}
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(10deg); }
+}
+
+.feature-icons {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.feature-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.feature-icon::before {
+  font-size: 2rem;
+}
+
+.feature-icon.connect::before {
+  content: '👥';
+}
+
+.feature-icon.share::before {
+  content: '💌';
+}
+
+.feature-icon.stay-updated::before {
+  content: '🌟';
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Source Sans Pro', sans-serif;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+button:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--surface);
+  border: 2px solid var(--border);
+  color: var(--text-primary);
+  padding: 14px 28px;
+  font-weight: 500;
+}
+
+.google-login-btn:hover {
+  background-color: var(--background);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.save-button {
+  background-color: var(--success);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.save-button:hover {
+  background-color: #27AE60;
+  transform: translateY(-1px);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.cancel-button {
+  background-color: var(--text-secondary);
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: var(--secondary);
+  transform: translateY(-1px);
+}
+
+/* Button Groups */
+div[style*="display: flex"] {
+  gap: 12px;
+}
+
+/* Logout Button */
+.logout-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 8px 16px;
+  background-color: var(--background);
+  color: var(--text-primary);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px var(--shadow);
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  opacity: 1;
+  background-color: var(--accent);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.logout-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+  pointer-events: none;
+}
+
+.logout-button:hover::after {
+  width: 200%;
+  height: 200%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App {
+    padding: 0.5rem 1rem;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .App-header {
+    padding: 0.5rem 0 1.5rem;
+  }
+  
+  .App-header h1 {
+    font-size: 2.8rem;
+    margin: 0.25rem 0 0.75rem;
+  }
+  
+  .post-item {
+    flex-direction: column;
+  }
+  
+  button {
+    width: 100%;
+  }
+  
+  .logout-button {
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 6px 12px;
+    font-size: 0.85rem;
   }
 }
