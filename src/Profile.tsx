@@ -1,4 +1,3 @@
-// Profile.tsx
 import React, { useEffect, useState } from 'react';
 import { supabase } from './supabaseClient';
 
@@ -81,8 +80,8 @@ function Profile({ userId }: { userId: string }) {
       if (updateError) {
         console.error('Error updating profile picture:', updateError.message);
       } else {
-        setProfilePicture(`${publicUrl}?t=${Date.now()}`); // update the displayed image with cache-busting
-        setPreviewUrl(null); // clear preview, now using uploaded image
+        setProfilePicture(`${publicUrl}?t=${Date.now()}`); // update the displayed image
+        setPreviewUrl(null); // now using uploaded image
         setSelectedFile(null);
         setPicTimestamp(Date.now());
         setUploadSuccess(true);
