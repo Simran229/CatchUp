@@ -40,13 +40,12 @@ function App() {
           .eq('id', data.user.id)
           .single();
 
-        if (selectError && selectError.code !== 'PGRST116') { // 116 = "No rows found"
+        if (selectError && selectError.code !== 'PGRST116') {
           console.error('Error checking user profile:', selectError.message);
           return;
         }
 
         if (!existingProfile) {
-          // INSERT the new user profile
           const { error: insertError } = await supabase
             .from('users')
             .insert([{ id: data.user.id, email: data.user.email, username: null }]);
@@ -60,7 +59,6 @@ function App() {
           setUsername(existingProfile.username || '');
         }
 
-        // Always navigate to /setup if no username
         if (!existingProfile || !existingProfile.username) {
           navigate('/setup');
         }
@@ -160,10 +158,86 @@ function App() {
             element={
               !user ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <button onClick={() => handleLogin('google')}>Login with Google</button>
-                  <button onClick={() => handleLogin('github')}>Login with GitHub</button>
-                  <button onClick={() => handleLogin('discord')}>Login with Discord</button>
-                  <button onClick={() => handleLogin('apple')}>Login with Apple</button>
+                  <button
+                    onClick={() => handleLogin('google')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 12px',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                      alt="Google logo"
+                      style={{ width: '20px', height: '20px' }}
+                    />
+                    Login with Google
+                  </button>
+
+                  <button
+                    onClick={() => handleLogin('github')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 12px',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <img
+                      src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                      alt="GitHub logo"
+                      style={{ width: '20px', height: '20px' }}
+                    />
+                    Login with GitHub
+                  </button>
+
+                  <button
+                    onClick={() => handleLogin('discord')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 12px',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/fr/4/4f/Discord_Logo_sans_texte.svg"
+                      alt="Discord logo"
+                      style={{ width: '20px', height: '20px' }}
+                    />
+                    Login with Discord
+                  </button>
+
+                  <button
+                    onClick={() => handleLogin('apple')}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '8px 12px',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      color: 'black',
+                    }}
+                  >
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+                      alt="Apple logo"
+                      style={{ width: '20px', height: '20px' }}
+                    />
+                    Login with Apple
+                  </button>
                 </div>
               ) : (
                 <div>
