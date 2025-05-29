@@ -105,8 +105,9 @@ function Profile({ userId }: { userId: string }) {
   return (
     <div
       style={{
+        width: '100%',
         margin: '2.5rem auto',
-        maxWidth: '700px',
+        maxWidth: '400px',
         background: 'var(--surface)',
         border: '1.5px solid var(--accent)',
         borderRadius: '22px',

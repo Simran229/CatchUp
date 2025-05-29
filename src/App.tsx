@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Profile from './Profile';
+import UsernameSetup from './UsernameSetup';
 import './App.css';
 
 dayjs.extend(utc);
@@ -20,7 +21,7 @@ function App() {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark';
   });
-  const navigate = useNavigate(); // Initialize navigate for redirects
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -29,6 +30,7 @@ function App() {
         console.error('Error getting user:', error.message);
         return;
       }
+
       if (data?.user) {
         setUser(data.user);
 
@@ -38,15 +40,16 @@ function App() {
           .eq('id', data.user.id)
           .single();
 
-        if (selectError) {
+        if (selectError && selectError.code !== 'PGRST116') { // 116 = "No rows found"
           console.error('Error checking user profile:', selectError.message);
           return;
         }
 
         if (!existingProfile) {
+          // INSERT the new user profile
           const { error: insertError } = await supabase
             .from('users')
-            .insert([{ id: data.user.id, email: data.user.email }]);
+            .insert([{ id: data.user.id, email: data.user.email, username: null }]);
 
           if (insertError) {
             console.error('Error creating profile:', insertError.message);
@@ -56,47 +59,16 @@ function App() {
         } else {
           setUsername(existingProfile.username || '');
         }
-      }
-    };
-    getUser();
-  }, []);
 
-  useEffect(() => {
-    const checkUsername = async () => {
-      if (!user) return;
-
-      const { data: userProfile, error } = await supabase
-        .from('users')
-        .select('username')
-        .eq('id', user.id)
-        .single();
-
-      if (error) {
-        console.error('Error fetching user profile:', error.message);
-        return;
-      }
-
-      if (!userProfile?.username) {
-        const username = prompt('Pick a username:');
-        if (username && username.trim() !== '') {
-          const { error: updateError } = await supabase
-            .from('users')
-            .update({ username })
-            .eq('id', user.id);
-
-          if (updateError) {
-            console.error('Error updating username:', updateError.message);
-          } else {
-            setUsername(username);
-            console.log('Username updated successfully');
-          }
+        // Always navigate to /setup if no username
+        if (!existingProfile || !existingProfile.username) {
+          navigate('/setup');
         }
-      } else {
-        setUsername(userProfile.username);
       }
     };
-    checkUsername();
-  }, [user]);
+
+    getUser();
+  }, [navigate]);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
@@ -123,7 +95,9 @@ function App() {
   };
 
   useEffect(() => {
-    fetchPosts();
+    if (user) {
+      fetchPosts();
+    }
   }, [user]);
 
   const handleLogin = async (provider: 'google' | 'github' | 'discord' | 'apple') => {
@@ -134,7 +108,7 @@ function App() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    navigate('/'); // Redirect to home page after logout
+    navigate('/');
   };
 
   return (
@@ -186,83 +160,10 @@ function App() {
             element={
               !user ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <button
-                    onClick={() => handleLogin('google')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '8px 12px',
-                      border: '1px solid #ccc',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
-                      alt="Google logo"
-                      style={{ width: '20px', height: '20px'}}
-                    />
-                    Login with Google
-                  </button>
-                  <button
-                    onClick={() => handleLogin('github')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '8px 12px',
-                      border: '1px solid #ccc',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <img
-                      src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
-                      alt="GitHub logo"
-                      style={{ width: '20px', height: '20px' }}
-                    />
-                    Login with GitHub
-                  </button>
-                  <button
-                    onClick={() => handleLogin('discord')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '8px 12px',
-                      border: '1px solid #ccc',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/fr/4/4f/Discord_Logo_sans_texte.svg"
-                      alt="Discord logo"
-                      style={{ width: '20px', height: '20px' }}
-                    />
-                    Login with Discord
-                  </button>
-                  <button
-                    onClick={() => handleLogin('apple')}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      padding: '8px 12px',
-                      border: '1px solid #ccc',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      color: 'black',
-                    }}
-                  >
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
-                      alt="Apple logo"
-                      style={{ width: '20px', height: '20px'}}
-                    />
-                    Login with Apple
-                  </button>
+                  <button onClick={() => handleLogin('google')}>Login with Google</button>
+                  <button onClick={() => handleLogin('github')}>Login with GitHub</button>
+                  <button onClick={() => handleLogin('discord')}>Login with Discord</button>
+                  <button onClick={() => handleLogin('apple')}>Login with Apple</button>
                 </div>
               ) : (
                 <div>
@@ -393,6 +294,7 @@ function App() {
             }
           />
           <Route path="/profile" element={<Profile userId={user?.id} />} />
+          <Route path="/setup" element={<UsernameSetup userId={user?.id} />} />
         </Routes>
       </header>
     </div>
